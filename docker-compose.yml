@@ -1,0 +1,119 @@
+version: '3.9'
+
+services:
+
+  #php+apache
+  php:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gestao_backend
+    working_dir: /var/www/html/
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - gestao_network
+    ports:
+      - "3080:80"
+    volumes:
+      - "./backend:/var/www/html"
+      - "./apache/sites-enabled/:/etc/apache2/sites-enabled/"
+    environment:
+      FRONTEND_HOST: node:3080
+      MYSQL_HOST: mysql
+      MYSQL_PASSWORD: user
+      MYSQL_USER: user
+      MYSQL_DATABASE: gestao_database
+      REDIS_HOST: redis 
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: senha
+
+  #node
+  node:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gestao_frontend
+    working_dir: /home/node/app
+    stdin_open: true
+    tty: true
+    command: bash -c "npm i && npm run dev"
+    networks:
+      - gestao_network
+    ports:
+      - "3000:8080"
+    volumes:
+      - "./frontend:/home/node/app"
+    environment:
+      # BACK_HOST: php:8080/api
+      CHOKIDAR_USEPOLLING: 'true'
+      HOST: '0.0.0.0'
+  
+  #mysql
+  mysql:
+    image: mysql:8.0
+    container_name: gestao_database
+    networks:
+      - gestao_network
+    ports:
+      - "3307:3306"
+    volumes:
+      - "./db:/home/bkp"
+      - "mysql_db:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_HOST: '0.0.0.0'
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: user
+      MYSQL_USER: user
+      MYSQL_DATABASE: gestao_database
+
+  #phpmyadmin
+  dbadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: "no"
+    container_name: gestao_phpmyadmin
+    networks:
+      - gestao_network
+    ports:
+      - "3033:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+
+  #redis
+  redis:
+    image: redis:7.0
+    container_name: gestao_session_database
+    command: bash -c "redis-server --requirepass senha"
+    networks:
+      - gestao_network
+    ports:
+      - "6379:6379"
+    volumes:
+      - "redis_db:/data"
+
+  #redis-commander
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: gestao_redis-commander
+    restart: always
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=senha
+    ports:
+      - "8083:8081"  
+    networks:
+      - gestao_network
+
+
+volumes:
+  mysql_db:
+    driver: "local"
+  redis_db:
+    driver: "local"
+
+networks:
+  gestao_network:
+    driver: bridge
