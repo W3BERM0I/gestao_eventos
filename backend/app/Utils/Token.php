@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Exceptions\TokenException;
 
 use App\Enums\CacheKeys;
 use App\Enums\CacheNaming;
@@ -31,7 +32,7 @@ class Token {
 
         // verificar se o email esta bloqueado
         if(self::isTokenBlocked($email))
-            throw new Exception('acesso bloqueado');
+            throw new TokenException("Token incorreto");
 
         // gera o token
         $token = self::generateToken();
@@ -41,23 +42,24 @@ class Token {
             CacheNaming::TOKEN->value => $token,
             CacheNaming::ATTEMPTS->value => 0,
             CacheNaming::RESENDS->value => 0,
+            CacheNaming::VERIFIED->value => False
         ], self::TOKEN_CACHE_TTL);
-
 
         //send email
         info('token: ' . $token);
     }  
 
     
-    public static function validateToken(String $email, int $token): Boolean
+    public static function validateToken(String $email, int $token)
     {
         $user = [];
 
-        if(CustomCache::has(CacheKeys::FLOW_TOKEN->append($email))) {
+        if(CustomCache::has(CacheKeys::FLOW_TOKEN->append($email)))
             $tokenUser = (Object) CustomCache::get(CacheKeys::FLOW_TOKEN->append($email));
-        } else {
-            return throw new Exception('token do usuario não encontrado');
-        }
+        else
+            throw new TokenException("Token Expirado");
+        
+        if($tokenUser->verificado) return $tokenUser;
 
         if($token != $tokenUser->token) {
             $tokenUser->attempts++;
@@ -67,37 +69,32 @@ class Token {
 
                 CustomCache::put(CacheKeys::FLOW_BLOCK->append($email), true, self::TOKEN_CACHE_TTL_LONG);
 
-                return throw new Exception('Tentativas excedidas');
+                throw new TokenException("Tentativas excedidas");
             }
 
             CustomCache::update(CacheKeys::FLOW_TOKEN->append($email), $tokenUser);
 
-            return throw new Exception('Token incorreto');
+            throw new TokenException("Token incorreto");
         }
 
-        if(CustomCache::has(CacheKeys::FLOW_TITLE->append($email))) {
-            $user = (Object) CustomCache::get(CacheKeys::FLOW_TITLE->append($email));
-        } else {
-            return throw new Exception('Usuario não encontrado');
-        }
+        if(CustomCache::has(CacheKeys::FLOW_TOKEN->append($email)))
+            $user = (Object) CustomCache::get(CacheKeys::FLOW_TOKEN->append($email));
+        else
+            throw new TokenException("Usuario não encontrado");
 
         $user->verified = true;
 
-        CustomCache::update(CacheKeys::FLOW_TITLE->append($email), $user);
-        CustomCache::delete(CacheKeys::FLOW_TOKEN->append($email));
+        CustomCache::update(CacheKeys::FLOW_TOKEN->append($email), $user);
 
-        return true;
+        return $user;
     }
 
         /**
      * Checks if user is blocked from sending new tokens, 
      */
-    private static function isTokenBlocked(string $email): void
+    private static function isTokenBlocked(string $email): Bool
     {
         $tokenBlocked = CustomCache::has(CacheKeys::FLOW_BLOCK->append($email));
         return $tokenBlocked ? true : false;
     }
-
-
-
 }

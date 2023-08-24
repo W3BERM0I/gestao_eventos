@@ -22,17 +22,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [AuthController::class, 'login']);
 Route::post('/create', [SignUpController::class, 'createUser']);
 
-Route::group(['prefix' => 'signup'], function () {
-    Route::get('/email', [SignUpController::class, 'verified_email']);
-    Route::post('/store', [SignUpController::class, 'store']);
+Route::group(['prefix' => 'login'], function () {
+    Route::post('/send', [AuthController::class, 'sendToken']);
+    Route::post('/validate', [AuthController::class, 'login']);
 });
 
 
-Route::middleware('auth:api')->group(function() {
-
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/teste', [AuthController::class, 'teste']);
 });
 
 
