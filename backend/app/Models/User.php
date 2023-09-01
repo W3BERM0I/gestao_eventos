@@ -15,10 +15,6 @@ class User extends Authenticatable
 
     protected $table = "users";
 
-    // protected $attributes = [
-    //     'nivel_acesso' => NivelAcesso::COMUN->value,
-    // ];
-
     /**
      * The attributes that are mass assignable.
      *
@@ -28,7 +24,18 @@ class User extends Authenticatable
         'nome',
         'email',
         'nivel_acesso',
-        //'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'remember_token',
+        'email_verified_at',
+        'created_at',
+        'updated_at'
     ];
 
     public function ingresso()
@@ -40,17 +47,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(EventoUser::class);
     }
-
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        //'password',
-        'remember_token',
-    ];
 
     /**
      * The attributes that should be cast.

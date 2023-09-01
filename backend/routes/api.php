@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SignUpController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -29,6 +30,8 @@ Route::group(['prefix' => 'login'], function () {
     Route::post('/validate', [AuthController::class, 'login']);
 });
 
+
+Route::get('/admins', [UserController::class, 'userAdmin']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/teste', [AuthController::class, 'teste']);
