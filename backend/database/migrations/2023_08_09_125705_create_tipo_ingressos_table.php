@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 use App\Models\Evento;
-use App\Models\User;
 
 return new class extends Migration
 {
@@ -14,14 +13,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ingressos', function (Blueprint $table) {
+        Schema::create('tipo_ingressos', function (Blueprint $table) {
             $table->id();
-            $table->boolean('quitado');
-            $table->string('tipo', 20);
+            $table->string('nome', 200);
+            $table->string('descricao', 200);
+            $table->Integer('qtd_ingressos');
+            $table->Integer('vendidos')->default(0);
             $table->decimal('valor', $precision = 8, $scale = 2);
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Evento::class)->constrained();
-        });
+            $table->foreignIdFor(Evento::class)->constrained()->onDelete('cascade');
+            $table->timestamps();
+        }); 
     }
 
     /**
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ingressos');
+        Schema::dropIfExists('tipo_ingressos');
     }
 };

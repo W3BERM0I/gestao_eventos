@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SignUpController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\EventoController;
+use App\Http\Controllers\IngressoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,11 +31,20 @@ Route::group(['prefix' => 'login'], function () {
     Route::post('/validate', [AuthController::class, 'login']);
 });
 
+Route::group(['prefix' => 'event'], function () {
+    Route::post('/create', [EventoController::class, 'create']);
+});
 
 Route::get('/admins', [UserController::class, 'userAdmin']);
 
+Route::group(['prefix' => 'ingress'], function () {
+
+    Route::post('/create', [IngressoController::class, 'create']);
+});
+
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/teste', [AuthController::class, 'teste']);
+
 });
 
 

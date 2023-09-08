@@ -18,28 +18,28 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'nome' => 'Moises Weber',
             'email' => 'moi01@gmail.com',
-            'nivel_acesso' => NivelAcesso::DIRETOR->value,
+            'nivel_acesso' => NivelAcesso::DIRETOR->name,
             'email_verified_at' => now()
         ]);
 
         \App\Models\User::factory()->create([
             'nome' => 'Moises Weber',
             'email' => 'moi02@gmail.com',
-            'nivel_acesso' => NivelAcesso::COLABORADOR->value,
+            'nivel_acesso' => NivelAcesso::COLABORADOR->name,
             'email_verified_at' => now()
         ]);
 
         \App\Models\User::factory()->create([
             'nome' => 'Moises Weber',
             'email' => 'moi03@gmail.com',
-            'nivel_acesso' => NivelAcesso::COLABORADOR->value,
+            'nivel_acesso' => NivelAcesso::COLABORADOR->name,
             'email_verified_at' => now()
         ]);
 
         \App\Models\User::factory()->create([
             'nome' => 'Moises Weber',
             'email' => 'moi04@gmail.com',
-            'nivel_acesso' => NivelAcesso::COLABORADOR->value,
+            'nivel_acesso' => NivelAcesso::COLABORADOR->name,
             'email_verified_at' => now()
         ]);
 

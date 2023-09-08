@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('eventos', function (Blueprint $table) {
             $table->id();
             $table->string('nome', 200);
-            $table->Integer('qtd_ingressos');
             $table->dateTime('data', $precision = 0);
             $table->string('localizacao', 300);
             $table->string('maps_id', 50)->nullable();

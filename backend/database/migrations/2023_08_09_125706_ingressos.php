@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-
-use App\Models\Evento;
+use App\Models\TipoIngresso;
 use App\Models\User;
 
 return new class extends Migration
@@ -15,10 +14,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('eventos_users', function (Blueprint $table) {
+        Schema::create('ingressos', function (Blueprint $table) {
             $table->id();
+            $table->boolean('quitado')->default(false);
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Evento::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(TipoIngresso::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('eventos_users');
+        Schema::dropIfExists('ingressos');
     }
 };

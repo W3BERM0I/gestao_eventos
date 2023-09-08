@@ -72,13 +72,7 @@ class AuthController extends Controller
             // Retorne o token como resposta
             return response()->json(['token' => $token]);
         }
-
+        
         return response()->json(["error" => "Token incorreto"], 401);
-    }
-
-    public function teste(Request $request)
-    {
-        $user = Auth::User();
-        return response()->json($user, 200);
     }
 }

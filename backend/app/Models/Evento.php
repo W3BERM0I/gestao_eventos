@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Ingresso;
+use App\Models\EventoUser;
+
 
 class Evento extends Model
 {
@@ -19,7 +22,6 @@ class Evento extends Model
      */
     protected $fillable = [
         'nome',
-        'qtd_ingressos',
         'data',
         'localizacao',
         'maps_id'
@@ -27,7 +29,7 @@ class Evento extends Model
 
 
     public function ingressos() {
-        return $this->hasMany(Ingressos::class);
+        return $this->hasMany(Ingresso::class);
     }
 
     public function eventosUser() {

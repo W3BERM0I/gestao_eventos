@@ -6,6 +6,8 @@ use App\Models\Evento;
 use App\Enums\NivelAcesso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Exception;
 
 class EloquentEventoRepository
 {
@@ -14,24 +16,29 @@ class EloquentEventoRepository
         return Evento::all();
     }
 
-    public function create(Request $request): Evento
+    public function findById(int $id)
     {
-        $nome = $request->nome;
-        $qtd_ingressos = $request->qtd_ingressos;
-        $data = $request->data;
-        $localizacao = $request->localizacao;
-        $maps_id = $request->maps_id;
+        return Evento::where('id', $id)->first();
+    }
 
-        DB::beginTransaction();
-        $evento = Evento::create([
-            'nome' => $nome,
-            'qtd_ingressos' => $qtd_ingressos,
-            'data' => $data,
-            'localizacao' => $localizacao,
-            'maps_id' => $maps_id,
-        ]);
-        DB::commit();
+    public function create(array $request): Evento
+    {
+        try {
+            $nome = $request['nome'];
+            $data = Carbon::createFromFormat('d-m-Y H:i:s', $request['data']);
+            $localizacao = $request['localizacao'];
+            $maps_id = $request['maps_id'];
 
-        return $evento;
+            $evento = Evento::create([
+                'nome' => $nome,
+                'data' => $data,
+                'localizacao' => $localizacao,
+                'maps_id' => $maps_id,
+            ]);
+
+            return $evento;
+        } catch (Exception $e) {
+            info('error: ', [$e]);
+        }
     }
 }

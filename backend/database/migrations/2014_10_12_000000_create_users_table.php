@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome', 50)->nullable()->default('Amigo');
             $table->string('email', 50)->unique();
-            $table->string('nivel_acesso', 50)->default(NivelAcesso::COMUN->value);
+            $table->string('nivel_acesso', 50)->default(NivelAcesso::COMUN->name);
             $table->timestamp('email_verified_at')->nullable();
             //$table->string('password', 80);
             $table->rememberToken();
