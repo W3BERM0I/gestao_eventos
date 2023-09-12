@@ -32,7 +32,7 @@ class Token {
 
         // verificar se o email esta bloqueado
         if(self::isTokenBlocked($email))
-            throw new TokenException("Token incorreto");
+            throw new TokenException("Por favor, Tente novamente mais tarde");
 
         // gera o token
         $token = self::generateToken();
@@ -89,7 +89,7 @@ class Token {
         return $user;
     }
 
-        /**
+    /**
      * Checks if user is blocked from sending new tokens, 
      */
     private static function isTokenBlocked(string $email): Bool

@@ -37,14 +37,11 @@ Route::group(['prefix' => 'event'], function () {
 
 Route::get('/admins', [UserController::class, 'userAdmin']);
 
-Route::group(['prefix' => 'ingress'], function () {
-
-    Route::post('/create', [IngressoController::class, 'create']);
-});
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::get('/teste', [AuthController::class, 'teste']);
-
+    Route::group(['prefix' => 'ingress'], function () {
+        Route::post('/create', [IngressoController::class, 'create']);
+    });
 });
 
 

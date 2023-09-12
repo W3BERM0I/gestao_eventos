@@ -29,8 +29,11 @@ class AuthController extends Controller
 
         $request->validate($rules, $messages);
 
-
-        Token::sendToken($request->email);
+        try{
+            Token::sendToken($request->email);
+        } catch(TokenException $e) {
+            return $e->response();
+        }
 
         return response()->json('Token gerado', 200);
     }
@@ -55,7 +58,7 @@ class AuthController extends Controller
         try {
         $tokenValidetad = Token::validateToken($request->email, $request->token);
         } catch(TokenException $e) {
-            return response()->json(['msgError' => $e->getMensagem()], 401);
+            return $e->response();
         }
 
         info('validate token: ', [$tokenValidetad]);

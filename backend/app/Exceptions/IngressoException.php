@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class TokenException extends Exception
+class IngressoException extends Exception
 {
     private string $mensagem;
 
@@ -21,6 +21,6 @@ class TokenException extends Exception
 
     public function response()
     {
-        return response()->json(['msgError' => $this->getMensagem()], 401);
+        return response()->json(['msgError' => $this->getMensagem()], 409);
     }
 }

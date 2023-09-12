@@ -1,7 +1,7 @@
 /**
- * plugins/index.js
+ * plugins/index.ts
  *
- * Automatically included in `./src/main.js`
+ * Automatically included in `./src/main.ts`
  */
 
 // Plugins
@@ -10,7 +10,10 @@ import vuetify from './vuetify'
 import pinia from '../store'
 import router from '../router'
 
-export function registerPlugins (app) {
+// Types
+import type { App } from 'vue'
+
+export function registerPlugins (app: App) {
   loadFonts()
   app
     .use(vuetify)

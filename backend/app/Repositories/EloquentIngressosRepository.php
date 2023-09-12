@@ -11,11 +11,14 @@ use Illuminate\Support\Facades\DB;
 
 class EloquentIngressosRepository
 {
-    public function create(int $tipo_ingresso_id, int $user_id)
+    public function create(int $tipo_ingresso_id, int $user_id, int $qtd)
     {
-        ModelIngresso::create([
-            'tipo_ingresso_id' => $tipo_ingresso_id,
-            'user_id' => $user_id,
-        ]);
+        for($i = 0; $i < $qtd; $i++) {
+            ModelIngresso::create([
+                'tipo_ingresso_id' => $tipo_ingresso_id,
+                'user_id' => $user_id,
+            ]);
+        }
+
     }
 }

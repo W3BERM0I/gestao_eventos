@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\IngressoException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -24,29 +25,35 @@ class IngressoController extends Controller
     
     public function create(Request $request)
     {
-
+        
         $rules = [
-            'tipo_ingresso_id' => 'required|integer',
+            'ingressos.*.tipo_ingresso_id' => 'required|integer',
+            'ingressos.*.qtd' => 'required|integer',
         ];
-
+        
         $messages = [
-            'tipo_ingresso_id.integer' => 'O campo de evento_id é um numero Inteiro.',
-            'tipo_ingresso_id.required' => 'O campo de nome é obrigatório.',
+            'ingressos.*.tipo_ingresso_id.integer' => 'O campo de evento_id é um numero Inteiro.',
+            'ingressos.*.qtd.integer' => 'O campo de quantidade é um numero Inteiro.',
+            'ingressos.*.tipo_ingresso_id.required' => 'O campo de nome é obrigatório.',
+            'ingressos.*.qtd.required' => 'O campo de quantidade é obrigatório.',
         ];
         
         $request->validate($rules, $messages);
 
-        $authUser = Auth::user();
-        //$authUser = 9;
+        $authUser = (Auth::user())->id;
 
         DB::beginTransaction();
         try {
-            $this->tipoIngressoRepository->adicionaUmIngresso($request->tipo_ingresso_id);
-            $this->ingressosRepository->create($request->tipo_ingresso_id, $authUser->id);
-        } catch(Exception $e){
+            foreach($request->ingressos as $ingressos)
+            {
+                info("ingresso: ", [$ingressos]);
+                $this->tipoIngressoRepository->adicionaIngressos($ingressos['tipo_ingresso_id'], $ingressos['qtd']);
+                $this->ingressosRepository->create($ingressos['tipo_ingresso_id'], $authUser, $ingressos['qtd']);
+            }
+        } catch(IngressoException $e) {
             info("error: ", [$e]);
             DB::rollBack();
-            return response()->json('Please, Try again later', 409);
+            return $e->response();
         }
 
         DB::commit();
