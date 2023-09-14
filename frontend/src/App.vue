@@ -25,6 +25,7 @@
 
     --cinza: #f5f5f5;
     --cinza-claro: #fafafa;
+    --cinza-escuro: #d9d9d9;
 
     --branco: #ffffff;
 

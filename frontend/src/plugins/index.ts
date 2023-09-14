@@ -10,8 +10,6 @@ import vuetify from "./vuetify";
 import pinia from "../store";
 import router from "../router";
 
-import "@fortawesome/fontawesome-free/css/all.css";
-
 
 // Types
 import type { App } from "vue";
