@@ -8,6 +8,6 @@
 
 <script lang="ts" setup>
 import DefaultView from "./View.vue";
-import navBar from "@/components/navBar/navBar.vue";
-import footerDefault from "@/components/navBar/footer.vue";
+import navBar from "@/components/cabecalho-footer/navBar.vue";
+import footerDefault from "@/components/cabecalho-footer/footer.vue";
 </script>

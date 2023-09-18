@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable-next-line vue/html-quotes -->
   <v-container
     fluid="true"
     style="background-color: black;"
@@ -48,6 +49,8 @@
         <p class="description__footer">
           <v-icon
             icon="fa-solid fa-envelope"
+            size="small"
+            class="icon__footer"
           />
           moisesweber01@gmail.com
         </p>
@@ -55,7 +58,10 @@
           class="
             description__footer"
         >
-          <v-icon icon="fa-brands fa-whatsapp" />
+          <v-icon
+            icon="fa-brands fa-whatsapp"
+            class="icon__footer"
+          />
           (51) 99504-7834
         </p>
       </v-col>
@@ -63,7 +69,7 @@
   </v-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 </script>
 
@@ -102,9 +108,13 @@
 }
 
 .description__footer {
-    font-size: .9rem;
+    font-size: .7rem;
     margin-bottom: .3rem;
+    display: flex;
+}
 
+p>.icon__footer {
+  display: none !important;
 }
 }
 </style>

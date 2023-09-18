@@ -1,6 +1,6 @@
 <template>
   <v-app-bar
-    color="var(--cor-primaria)"
+    color="#42A5F5"
     density="default"
     scroll-behavior="elevate"
     style="position: fixed;"

@@ -9,7 +9,7 @@
 
 <style>
 *:root {
-    --cor-primaria: #42a5f5;
+    --cor-primaria: #42A5F5;
     --cor-secundaria: #F07DEA;
     --cor-texto-destaque: #A460ED;
     --cor-background-cinza: #EEEEEE;
