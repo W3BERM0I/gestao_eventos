@@ -32,12 +32,14 @@
     />
 
     <exibe-informacoes />
+    <exibe-mercado />
   </div>
 </template>
 
 <script setup lang="ts">
 import exibeEventos from "@/components/sections/exibeEventos.vue";
 import ExibeInformacoes from "@/components/sections/ExibeInformacoes.vue";
+import ExibeMercado from "@/components/sections/ExibeMercado.vue";
 
 
 </script>
