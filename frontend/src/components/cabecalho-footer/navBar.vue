@@ -14,9 +14,12 @@
         icon="fa-regular fa-circle-user"
         class="icon__navbar"
       />
-      <v-btn class="btn__navbar">
+      <router-link
+        class="btn__navbar"
+        :to="{ name: 'Login' }"
+      >
         Entrar
-      </v-btn>
+      </router-link>
     </template>
   </v-app-bar>
 </template>
@@ -37,6 +40,10 @@
 
 .btn__navbar {
   color: white;
+  text-decoration: none !important;
+  margin-left: .5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
 
 }
 </style>

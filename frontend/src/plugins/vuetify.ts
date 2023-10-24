@@ -9,6 +9,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 
 import {fa, aliases} from "vuetify/iconsets/fa";
+import { mdi } from "vuetify/iconsets/mdi";
 import "@fortawesome/fontawesome-free/css/all.css";
 
 
@@ -33,6 +34,7 @@ export default createVuetify({
         aliases,
         sets: {
             fa,
+            mdi
         },
     },
 });
